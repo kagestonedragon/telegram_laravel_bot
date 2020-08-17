@@ -1,6 +1,8 @@
 .vs_code
 .idea
 
+composer
+
 /node_modules
 /public/hot
 /public/storage

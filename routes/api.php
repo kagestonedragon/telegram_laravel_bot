@@ -14,6 +14,50 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
+
+Route::group(
+    [
+        'prefix' => config('telegram.bots.money.hash'),
+    ],
+    function () {
+        Route::group(
+            [
+                'prefix' => 'webhook',
+            ],
+            function() {
+                Route::post('', 'SettingsController@update');
+            }
+        );
+
+        Route::group(
+            [
+                'prefix' => 'settings',
+            ],
+            function () {
+                Route::group(
+                    [
+                        'prefix' => 'webhook',
+                    ],
+                    function () {
+                        Route::get('set', 'SettingsController@setWebHook');
+                        Route::get('getinfo', 'SettingsController@getWebHookInfo');
+                        Route::get('delete', 'SettingsController@deleteWebhook');
+                        //Route::get('show', 'SettingsController@show');
+                    }
+                );
+            }
+        );
+    }
+);
+
+Route::group(
+    [
+        'prefix' => 'test',
+    ],
+    function () {
+        Route::get('plural', 'SettingsController@test');
+    }
+);
